@@ -749,14 +749,14 @@ main {
 		position: relative;
 
 		&::before {
-			content: "Next Step";
+			content: "Selanjutnya";
 		}
 
 		:root:has(.stepRadio:checked[value="4"]) & {
 			background-color: var(--blue-purplish);
 
 			&::before {
-				content: "Confirm";
+				content: "Selesai";
 			}
 		}
 
@@ -800,7 +800,7 @@ main {
 		position: relative;
 
 		&::before {
-			content: "Go Back";
+			content: "Sebelumnya";
 		}
 
 		.stepRadio {

@@ -10,15 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('riwayat_kerjas', function (Blueprint $table) {
+        Schema::create('penyakits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pegawai_id')->constrained('pegawais')->onDelete('cascade');
-            $table->integer('gaji_pokok');
-            $table->integer('bonus_nominal');
-            $table->integer('total_upah');
+            $table->string('nama');
+            $table->text('deskripsi')->nullable();
+            $table->text('pertolongan_pertama')->nullable();
+            $table->text('saran_lanjut')->nullable();
             $table->timestamps();
         });
-
 
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('riwayat_kerjas');
+        Schema::dropIfExists('penyakits');
     }
 };

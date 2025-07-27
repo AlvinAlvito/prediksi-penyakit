@@ -1,22 +1,19 @@
 <?php
 
-use App\Http\Controllers\Api\ChartController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Models\Pegawai;
-use App\Http\Controllers\PegawaiController;
-use App\Http\Controllers\PemasukanController;
-use App\Http\Controllers\FuzzyfikasiController;
-use App\Http\Controllers\RiwayatKerjaController;
-use App\Http\Controllers\GajiController;
 
-// ===================
+use App\Http\Controllers\DiagnosaController;
+
+// Halaman Index
+Route::get('/', [DiagnosaController::class, 'form'])->name('index');
+Route::post('/diagnosa', [DiagnosaController::class, 'store'])->name('diagnosa.store');
+
+
 // Halaman Login
-// ===================
-Route::get('/', function () {
-    return view('index');
-})->name('index');
-
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
 // ===================
 // Proses Login Manual
 // ===================
@@ -51,60 +48,75 @@ Route::get('/admin', function () {
 })->name('dashboard');
 
 // ===================
-// CRUD Pegawai
+// CRUD Penyakit
 // ===================
-Route::get('/admin/data-pegawai', function () {
+Route::get('/admin/data-penyakit', function () {
     if (!session('is_admin')) return redirect('/');
-    return app(PegawaiController::class)->index();
-})->name('pegawai.index');
+    return app(PenyakitController::class)->index();
+})->name('penyakit.index');
 
-Route::post('/admin/data-pegawai', function (Request $request) {
+Route::post('/admin/data-penyakit', function (Request $request) {
     if (!session('is_admin')) return redirect('/');
-    return app(PegawaiController::class)->store($request);
-})->name('pegawai.store');
+    return app(PenyakitController::class)->store($request);
+})->name('penyakit.store');
 
-Route::delete('/admin/data-pegawai/{id}', function ($id) {
+Route::delete('/admin/data-penyakit/{id}', function ($id) {
     if (!session('is_admin')) return redirect('/');
-    return app(PegawaiController::class)->destroy($id);
-})->name('pegawai.destroy');
+    return app(PenyakitController::class)->destroy($id);
+})->name('penyakit.destroy');
 
-// ===================
-// CRUD Pemasukan
-// ===================
-Route::get('/admin/data-pemasukan', function () {
-    if (!session('is_admin')) return redirect('/');
-    return app(PemasukanController::class)->index();
-})->name('pemasukan.index');
-
-Route::post('/admin/data-pemasukan', function (Request $request) {
-    if (!session('is_admin')) return redirect('/');
-    return app(PemasukanController::class)->store($request);
-})->name('pemasukan.store');
-
-Route::delete('/admin/data-pemasukan/{id}', function ($id) {
-    if (!session('is_admin')) return redirect('/');
-    return app(PemasukanController::class)->destroy($id);
-})->name('pemasukan.destroy');
 
 // ===================
-// Fuzzifikasi
+// CRUD Gejala
 // ===================
-Route::get('/admin/fuzzifikasi', function () {
+Route::get('/admin/data-gejala', function () {
     if (!session('is_admin')) return redirect('/');
-    return app(FuzzyfikasiController::class)->index();
-})->name('fuzzifikasi');
+    return app(GejalaController::class)->index();
+})->name('gejala.index');
 
-// ===================
-// Riwayat Gaji & Bonus
-// ===================
-Route::get('/admin/gaji-bonus', function () {
+Route::post('/admin/data-gejala', function (Request $request) {
     if (!session('is_admin')) return redirect('/');
-    return app(GajiController::class)->index();
-})->name('admin.gaji');
+    return app(GejalaController::class)->store($request);
+})->name('gejala.store');
 
+Route::delete('/admin/data-gejala/{id}', function ($id) {
+    if (!session('is_admin')) return redirect('/');
+    return app(GejalaController::class)->destroy($id);
+})->name('gejala.destroy');
 
+// ===================
+// CRUD Bobot
+// ===================
+Route::get('/admin/data-bobot', function () {
+    if (!session('is_admin')) return redirect('/');
+    return app(BobotController::class)->index();
+})->name('bobot.index');
 
-Route::get('/chart/sektor', [ChartController::class, 'buahPerSektor']);
-Route::get('/chart/pegawai', [ChartController::class, 'buahPerPegawai']);
-Route::get('/chart/cuaca', [ChartController::class, 'buahPerCuaca']);
-Route::get('/chart/pendapatan-tertinggi', [ChartController::class, 'pendapatanTertinggi']);
+Route::post('/admin/data-bobot', function (Request $request) {
+    if (!session('is_admin')) return redirect('/');
+    return app(BobotController::class)->store($request);
+})->name('bobot.store');
+
+Route::delete('/admin/data-bobot/{id}', function ($id) {
+    if (!session('is_admin')) return redirect('/');
+    return app(BobotController::class)->destroy($id);
+})->name('bobot.destroy');
+
+// ===================
+// CRUD Diagnosa
+// ===================
+Route::get('/admin/data-diagnosa', function () {
+    if (!session('is_admin')) return redirect('/');
+    return app(DiagnosaController::class)->index();
+})->name('admin.diagnosa.index');
+
+Route::post('/admin/data-diagnosa', function (Request $request) {
+    if (!session('is_admin')) return redirect('/');
+    return app(DiagnosaController::class)->store($request);
+})->name('admin.diagnosa.store');
+
+Route::delete('/admin/data-diagnosa/{id}', function ($id) {
+    if (!session('is_admin')) return redirect('/');
+    return app(DiagnosaController::class)->destroy($id);
+})->name('admin.diagnosa.destroy');
+
