@@ -45,12 +45,14 @@
                                 <td>{{ $diagnosa->persentase }}%</td>
                                 <td>
                                     <a href="{{ route('diagnosa.hasil', $diagnosa->id) }}"
-                                        class="btn btn-info btn-sm">Lihat</a>
+                                        class="btn btn-primary text-ligt btn-sm"><i class="bi bi-eye"></i></a>
                                     <form action="{{ route('admin.diagnosa.destroy', $diagnosa->id) }}" method="POST"
                                         style="display:inline" onsubmit="return confirm('Yakin ingin menghapus?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger btn-sm">Hapus</button>
+                                       <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="uil uil-trash-alt"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

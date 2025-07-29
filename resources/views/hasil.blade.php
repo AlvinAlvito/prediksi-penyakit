@@ -17,6 +17,17 @@
 </head>
 
 <body>
+    <nav class="navbar bg-body-tertiary fixed-top">
+        <div class="container-fluid ">
+            <a class="navbar-brand"> <span class="fs-5 bg-primary text-light px-2 py-2 rounded "><i
+                        class="bi bi-capsule-pill"></i> Prediksi Penyakit</span> </a>
+            <form class="d-flex" role="search">
+                <a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login <i
+                        class="bi bi-box-arrow-in-right"></i></a>
+            </form>
+        </div>
+    </nav>
+
     <main>
 
         <!-- Sidebar -->
@@ -51,9 +62,6 @@
 
         <!-- Form -->
         <div class="form">
-
-
-
             <div class="formStep thanks">
                 <div class="card shadow-lg border-0">
                     <div class="card-body mb-5">
@@ -78,13 +86,20 @@
                             </div>
 
                             <div class="mb-4">
+                                <h5 class="text-primary">Gejala yang Dialami</h5>
+                                @foreach ($diagnosa->gejalas as $gejala)
+                                    {{ $gejala->nama }},
+                                @endforeach
+                            </div>
+
+                            <div class="mb-4">
                                 <h5 class="text-primary">Persentase Kemungkinan Penyakit</h5>
                                 <ul class="list-group">
                                     @foreach ($hasil as $penyakit => $persen)
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             {{ $penyakit }}
                                             <span
-                                                class="badge bg-info text-dark rounded-pill">{{ $persen }}%</span>
+                                                class="badge bg-success text-light rounded-pill">{{ $persen }}%</span>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -101,7 +116,8 @@
                                     <h5 class="text-primary">Informasi Penyakit {{ $penyakitUtama->nama }}</h5>
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item">
-                                            <strong>Deskripsi</strong><br>{{ $penyakitUtama->deskripsi }}</li>
+                                            {{ $penyakitUtama->deskripsi }}
+                                        </li>
                                         <li class="list-group-item"><strong>Pertolongan
                                                 Pertama</strong><br>{{ $penyakitUtama->pertolongan_pertama }}</li>
                                         <li class="list-group-item"><strong>Saran

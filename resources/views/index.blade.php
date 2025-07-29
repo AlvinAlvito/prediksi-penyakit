@@ -17,6 +17,44 @@
 </head>
 
 <body>
+
+    <nav class="navbar bg-body-tertiary fixed-top">
+        <div class="container-fluid ">
+            <a class="navbar-brand"> <span class="fs-5 bg-primary text-light px-2 py-2 rounded "><i class="bi bi-capsule-pill"></i> Prediksi Penyakit</span> </a>
+            <form class="d-flex" role="search">
+                <a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login <i class="bi bi-box-arrow-in-right"></i></a>
+            </form>
+        </div>
+    </nav>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="/" class="modal-content">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Login Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    @if ($errors->has('login'))
+                        <div class="alert alert-danger">{{ $errors->first('login') }}</div>
+                    @endif
+                    <div class="mb-3">
+                        <label>Username:</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password:</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <main>
         @if ($errors->any())
             <div class="alert alert-danger p-3">

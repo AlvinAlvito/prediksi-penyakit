@@ -60,7 +60,7 @@
                         <span class="h5 d-block text-center mb-2">Diagnosa Berdasarkan Jenis Kelamin</span>
                         <div id="chartGender"></div>
                     </div>
-                    <div class="col-lg-12 col-sm-12 mb-4">
+                      <div class="col-lg-6 col-sm-12 mb-4">
                         <span class="h5 d-block text-center mb-2">Kekuatan Bobot Gejala per Penyakit</span>
                         <div id="chartRadar"></div>
                     </div>
