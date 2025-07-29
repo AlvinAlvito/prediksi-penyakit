@@ -220,6 +220,40 @@
         document.getElementById('real-submit-button').click();
     }
 </script>
+<script>
+    function submitForm() {
+        const nama = document.querySelector('input[name="nama_pasien"]');
+        const usia = document.querySelector('input[name="usia"]');
+        const jk = document.querySelector('input[name="jenis_kelamin"]:checked');
+        const gejalaDasar = document.querySelectorAll('input[name="gejala_dasar[]"]:checked');
+
+        let errors = [];
+
+        if (!nama.value.trim()) {
+            errors.push("Nama pasien wajib diisi.");
+        }
+
+        if (!usia.value.trim() || isNaN(usia.value) || usia.value <= 0) {
+            errors.push("Usia harus diisi dengan benar.");
+        }
+
+        if (!jk) {
+            errors.push("Jenis kelamin wajib dipilih.");
+        }
+
+        if (gejalaDasar.length === 0) {
+            errors.push("Minimal satu gejala dasar harus dipilih.");
+        }
+
+        if (errors.length > 0) {
+            alert("Form belum lengkap:\n\n" + errors.join("\n"));
+            return; // Jangan submit
+        }
+
+        // Semua valid, jalankan submit
+        document.getElementById('real-submit-button').click();
+    }
+</script>
 
 
 </html>

@@ -4,7 +4,7 @@
             <img src="/images/logo.jpg"  alt="">
         </div>
 
-        <span class="logo_name">Sawit Zuheri</span>
+        <span class="logo_name">Prediksi Obat</span>
     </div>
 
     <div class="menu-items">
@@ -16,27 +16,28 @@
                 </a>
             </li>
             <li >
-                <a href="/admin/data-pegawai" class="{{ Request::is('/admin/data-pegawai') ? 'active' : '' }}">
+                <a href="/admin/data-penyakit" class="{{ Request::is('/admin/data-penyakit') ? 'active' : '' }}">
                     <i class="uil uil-files-landscapes"></i>
-                    <span class="link-name">Data Pegawai</span>
+                    <span class="link-name">Data Penyakit</span>
                 </a>
             </li>
              <li >
-                <a href="/admin/data-pemasukan" class="{{ Request::is('/admin/data-pemasukan') ? 'active' : '' }}">
+                <a href="/admin/data-gejala" class="{{ Request::is('/admin/data-gejala') ? 'active' : '' }}">
                     <i class="uil uil-files-landscapes"></i>
-                    <span class="link-name">Data Pemasukan</span>
+                    <span class="link-name">Data Gejala</span>
                 </a>
             </li>
-            <li >
-                <a href="/admin/fuzzifikasi" class="{{ Request::is('/admin/fuzzifikasi') ? 'active' : '' }}">
-                    <i class="uil uil-chart"></i>
-                    <span class="link-name">Fuzzifikasi</span>
+             <li >
+                <a href="/admin/data-bobot" class="{{ Request::is('/admin/data-bobot') ? 'active' : '' }}">
+                    <i class="uil uil-files-landscapes"></i>
+                    <span class="link-name">Data Bobot</span>
                 </a>
             </li>
-            <li >
-                <a href="/admin/gaji-bonus" class="{{ Request::is('/admin/gaji-bonus') ? 'active' : '' }}">
-                    <i class="uil uil-thumbs-up"></i>
-                    <span class="link-name">Gaji & Bonus</span>
+
+             <li >
+                <a href="/admin/data-diagnosa" class="{{ Request::is('/admin/data-diagnosa') ? 'active' : '' }}">
+                    <i class="uil uil-files-landscapes"></i>
+                    <span class="link-name">Data diagnosa</span>
                 </a>
             </li>
         </ul>

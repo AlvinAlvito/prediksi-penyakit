@@ -4,10 +4,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\DiagnosaController;
+use App\Http\Controllers\PenyakitController;
+use App\Http\Controllers\GejalaController;
+use App\Http\Controllers\BobotController;
 
 // Halaman Index
 Route::get('/', [DiagnosaController::class, 'form'])->name('index');
 Route::post('/diagnosa', [DiagnosaController::class, 'store'])->name('diagnosa.store');
+Route::get('/hasil/{id}', [DiagnosaController::class, 'hasil'])->name('diagnosa.hasil');
 
 
 // Halaman Login
@@ -119,4 +123,15 @@ Route::delete('/admin/data-diagnosa/{id}', function ($id) {
     if (!session('is_admin')) return redirect('/');
     return app(DiagnosaController::class)->destroy($id);
 })->name('admin.diagnosa.destroy');
+
+Route::get('/admin/data-diagnosa/{id}/edit', function ($id) {
+    if (!session('is_admin')) return redirect('/');
+    return app(DiagnosaController::class)->edit($id);
+})->name('admin.diagnosa.edit');
+
+Route::put('/admin/data-diagnosa/{id}', function (Request $request, $id) {
+    if (!session('is_admin')) return redirect('/');
+    return app(DiagnosaController::class)->update($request, $id);
+})->name('admin.diagnosa.update');
+
 

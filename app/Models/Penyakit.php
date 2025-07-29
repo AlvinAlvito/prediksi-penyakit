@@ -6,19 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penyakit extends Model
 {
-    protected $table = 'penyakits';
-
     protected $fillable = [
-        'kode',
-        'nama',
-        'deskripsi',
+        'nama', 'deskripsi', 'pertolongan_pertama', 'saran_lanjut'
     ];
-
-    public $timestamps = false;
-
-    // Relasi ke Bobot
-    public function bobotGejalas()
-    {
-        return $this->hasMany(BobotGejala::class);
-    }
 }

@@ -823,7 +823,6 @@ main {
 		align-items: center;
 		text-align: center;
 		gap: 1rem;
-		padding: 2.3em 1em;
 
 		svg {
 			margin-bottom: 1rem;
@@ -916,7 +915,9 @@ main {
 		justify-content: center;
 		align-items: center;
 	}
-
+	.card{
+		margin-bottom: 12em !important;
+	}
 	.sidebar {
 		position: fixed;
 		left: 0;

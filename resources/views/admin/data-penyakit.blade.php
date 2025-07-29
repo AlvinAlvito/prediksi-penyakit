@@ -1,136 +1,195 @@
 @extends('layouts.main')
 @section('content')
-<section class="dashboard">
-    <div class="top">
-        <i class="uil uil-bars sidebar-toggle"></i>
-
-        <div class="search-box">
-            <i class="uil uil-search"></i>
-            <input type="text" placeholder="Search here...">
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here...">
+            </div>
+            <img src="/images/profil.png" alt="">
         </div>
-        
-        <img src="/images/profil.png" alt="">
-    </div>
-    <div class="dash-content">
-        <div class="activity">
-            <div class="title">
-                <i class="uil uil-users-alt"></i>
-                <span class="text">Data Penyakit</span>                
-            </div>
 
-            @if (session('success'))
-                <div class="alert alert-success mt-2">{{ session('success') }}</div>
-            @endif
-
-            <div class="row justify-content-end mb-3">
-                <div class="col-lg-3 col-md-4 col-sm-6 text-end">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahPegawai"><i class="uil uil-plus"></i> Tambah Data</button>
+        <div class="dash-content">
+            <div class="activity">
+                <div class="title">
+                    <i class="uil uil-medkit"></i>
+                    <span class="text">Data Penyakit</span>
                 </div>
-            </div>
 
-            <table id="datatable" class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Umur</th>
-                        <th scope="col">Alamat</th>
-                        <th scope="col">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($pegawais as $pegawai)
+                @if (session('success'))
+                    <div class="alert alert-success mt-2">{{ session('success') }}</div>
+                @endif
+
+                <div class="row justify-content-end mb-3">
+                    <div class="col-lg-3 col-md-4 col-sm-6 text-end">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahPenyakit"><i
+                                class="uil uil-plus"></i> Tambah Penyakit</button>
+                    </div>
+                </div>
+
+                <table id="datatable" class="table table-hover table-striped">
+                    <thead>
                         <tr>
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $pegawai->nama }}</td>
-                            <td>{{ $pegawai->umur }}</td>
-                            <td>{{ $pegawai->alamat }}</td>
-                            <td>
-                                <a class="text-primary" data-bs-toggle="modal" data-bs-target="#modalEditPegawai{{ $pegawai->id }}"><i class="uil uil-edit"></i></a>
-
-                                <form action="{{ route('pegawai.destroy', $pegawai->id) }}" method="POST" style="display:inline-block" onsubmit="return confirm('Yakin ingin menghapus pegawai ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-link text-danger p-0 m-0"><i class="uil uil-trash-alt"></i></button>
-                                </form>
-                            </td>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Deskripsi</th>
+                            <th>Pertolongan Pertama</th>
+                            <th>Saran Lanjut</th>
+                            <th>Aksi</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($penyakits as $penyakit)
+                            <tr>
+                                <th>{{ $loop->iteration }}</th>
+                                <td>{{ $penyakit->nama }}</td>
+                                <td>{{ $penyakit->deskripsi }}</td>
+                                <td>{{ $penyakit->pertolongan_pertama }}</td>
+                                <td>{{ $penyakit->saran_lanjut }}</td>
+                                <td>
+                                    <a class="text-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modalEditPenyakit{{ $penyakit->id }}"><i
+                                            class="uil uil-edit"></i></a>
 
-                        {{-- Modal Edit Pegawai --}}
-                        <div class="modal fade" id="modalEditPegawai{{ $pegawai->id }}" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <form action="{{ route('pegawai.store') }}" method="POST">
+                                    <form action="{{ route('penyakit.destroy', $penyakit->id) }}" method="POST"
+                                        style="display:inline-block"
+                                        onsubmit="return confirm('Yakin ingin menghapus penyakit ini?')">
                                         @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Edit Pegawai</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <input type="hidden" name="id" value="{{ $pegawai->id }}">
-                                            <div class="mb-3">
-                                                <label>Nama</label>
-                                                <input type="text" name="nama" class="form-control" value="{{ $pegawai->nama }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label>Umur</label>
-                                                <input type="number" name="umur" class="form-control" value="{{ $pegawai->umur }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label>Alamat</label>
-                                                <textarea name="alamat" class="form-control">{{ $pegawai->alamat }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                        </div>
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-link text-danger p-0 m-0"><i
+                                                class="uil uil-trash-alt"></i></button>
                                     </form>
+                                </td>
+                            </tr>
+
+                            {{-- Modal Edit Penyakit --}}
+                            <!-- Modal Edit Penyakit -->
+                            <div class="modal fade" id="modalEditPenyakit{{ $penyakit->id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="{{ route('penyakit.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $penyakit->id }}">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Edit Penyakit</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label>Nama</label>
+                                                    <input type="text" name="nama" class="form-control"
+                                                        value="{{ $penyakit->nama }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Deskripsi</label>
+                                                    <textarea name="deskripsi" class="form-control" required>{{ $penyakit->deskripsi }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Pertolongan Pertama</label>
+                                                    <textarea name="pertolongan_pertama" class="form-control">{{ $penyakit->pertolongan_pertama }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Saran Lanjut</label>
+                                                    <textarea name="saran_lanjut" class="form-control">{{ $penyakit->saran_lanjut }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Batal</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
+                            <!-- Modal Edit Penyakit -->
+                            <div class="modal fade" id="modalEditPenyakit{{ $penyakit->id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="{{ route('penyakit.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $penyakit->id }}">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Edit Penyakit</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label>Nama</label>
+                                                    <input type="text" name="nama" class="form-control"
+                                                        value="{{ $penyakit->nama }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Deskripsi</label>
+                                                    <textarea name="deskripsi" class="form-control" required>{{ $penyakit->deskripsi }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Pertolongan Pertama</label>
+                                                    <textarea name="pertolongan_pertama" class="form-control">{{ $penyakit->pertolongan_pertama }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Saran Lanjut</label>
+                                                    <textarea name="saran_lanjut" class="form-control">{{ $penyakit->saran_lanjut }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Batal</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Belum ada data penyakit.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Tambah Penyakit -->
+    <div class="modal fade" id="modalTambahPenyakit" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ route('penyakit.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Penyakit</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Nama</label>
+                            <input type="text" name="nama" class="form-control" required>
                         </div>
-
-                    @empty
-                        <tr><td colspan="5" class="text-center">Belum ada data pegawai.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
+                        <div class="mb-3">
+                            <label>Deskripsi</label>
+                            <textarea name="deskripsi" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>Pertolongan Pertama</label>
+                            <textarea name="pertolongan_pertama" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>Saran Lanjut</label>
+                            <textarea name="saran_lanjut" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</section>
-
-<!-- Modal Tambah Pegawai -->
-<div class="modal fade" id="modalTambahPegawai" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('pegawai.store') }}" method="POST">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Pegawai</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label>Nama</label>
-                        <input type="text" name="nama" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label>Umur</label>
-                        <input type="number" name="umur" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label>Alamat</label>
-                        <textarea name="alamat" class="form-control"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
     <!-- DataTables CDN -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -138,7 +197,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#datatable').DataTable({
                 language: {
                     search: "Cari:",
