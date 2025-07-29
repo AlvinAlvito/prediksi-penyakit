@@ -56,7 +56,7 @@
 
             <div class="formStep thanks">
                 <div class="card shadow-lg border-0">
-                    <div class="card-body mb-5" >
+                    <div class="card-body mb-5">
                         <div class="text-center mb-4">
                             <span class="bg-success text-white rounded-circle p-3 fs-3">
                                 <i class="bi bi-check-circle-fill"></i>
@@ -96,6 +96,19 @@
                                 dengan kemungkinan
                                 <span class="badge bg-danger text-white">{{ $diagnosa['persentase'] }}%</span>
                             </div>
+                            @if ($penyakitUtama)
+                                <div class="mt-4">
+                                    <h5 class="text-primary">Informasi Penyakit {{ $penyakitUtama->nama }}</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Deskripsi</strong><br>{{ $penyakitUtama->deskripsi }}</li>
+                                        <li class="list-group-item"><strong>Pertolongan
+                                                Pertama</strong><br>{{ $penyakitUtama->pertolongan_pertama }}</li>
+                                        <li class="list-group-item"><strong>Saran
+                                                Lanjut</strong><br>{{ $penyakitUtama->saran_lanjut }}</li>
+                                    </ul>
+                                </div>
+                            @endif
                         @else
                             <div class="alert alert-secondary">
                                 Belum ada analisis. Silakan isi form terlebih dahulu.
@@ -122,19 +135,25 @@
 </script>
 <script>
     function handleFinishClick() {
-        // Redirect ke halaman index
-        window.location.href = "{{ route('index') }}";
+        // Arahkan ke halaman sebelumnya dan refresh
+        if (document.referrer) {
+            window.location.href = document.referrer;
+        } else {
+            window.location.reload(); // fallback jika tidak ada referrer
+        }
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-    const btn = document.getElementById("submit-button");
-    if (btn) {
-        btn.classList.remove("submit"); // ← hapus class yang menambahkan ::before
-        btn.innerHTML = 'Selesai <i class="bi bi-check-circle-fill"></i>';
-    }
-});
-
+    document.addEventListener("DOMContentLoaded", function() {
+        const btn = document.getElementById("submit-button");
+        if (btn) {
+            btn.classList.remove("submit"); // hilangkan class yang menyebabkan ::before
+            btn.innerHTML = 'Selesai <i class="bi bi-check-circle-fill"></i>';
+            btn.addEventListener("click", handleFinishClick); // tambahkan event listener
+        }
+    });
 </script>
+
+
 
 
 

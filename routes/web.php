@@ -7,7 +7,8 @@ use App\Http\Controllers\DiagnosaController;
 use App\Http\Controllers\PenyakitController;
 use App\Http\Controllers\GejalaController;
 use App\Http\Controllers\BobotController;
-
+use App\Models\Diagnosa;
+use Illuminate\Support\Facades\DB;
 // Halaman Index
 Route::get('/', [DiagnosaController::class, 'form'])->name('index');
 Route::post('/diagnosa', [DiagnosaController::class, 'store'])->name('diagnosa.store');
@@ -44,12 +45,20 @@ Route::get('/logout', function () {
 // ===================
 // Dashboard Admin
 // ===================
+
+
 Route::get('/admin', function () {
-    if (!session('is_admin')) {
-        return redirect('/');
-    }
-    return view('admin.index');
+    if (!session('is_admin')) return redirect('/');
+
+    // Ambil data jumlah diagnosa per penyakit
+    $penyakitStats = Diagnosa::select('hasil_penyakit', DB::raw('count(*) as total'))
+        ->groupBy('hasil_penyakit')
+        ->orderBy('total', 'desc')
+        ->get();
+
+    return view('admin.index', compact('penyakitStats'));
 })->name('dashboard');
+
 
 // ===================
 // CRUD Penyakit
@@ -124,14 +133,5 @@ Route::delete('/admin/data-diagnosa/{id}', function ($id) {
     return app(DiagnosaController::class)->destroy($id);
 })->name('admin.diagnosa.destroy');
 
-Route::get('/admin/data-diagnosa/{id}/edit', function ($id) {
-    if (!session('is_admin')) return redirect('/');
-    return app(DiagnosaController::class)->edit($id);
-})->name('admin.diagnosa.edit');
-
-Route::put('/admin/data-diagnosa/{id}', function (Request $request, $id) {
-    if (!session('is_admin')) return redirect('/');
-    return app(DiagnosaController::class)->update($request, $id);
-})->name('admin.diagnosa.update');
 
 

@@ -21,17 +21,17 @@
                 <div class="boxes">
                     <div class="box box1">
                         <i class="uil uil-thumbs-up"></i>
-                        <span class="text">Total Pegawai</span>
-                        <span class="number">340</span>
+                        <span class="text">Total Penyakit</span>
+                        <span class="number">40</span>
                     </div>
                     <div class="box box2">
                         <i class="uil uil-comments"></i>
-                        <span class="text">Total Mandor</span>
+                        <span class="text">Total Pasien</span>
                         <span class="number">43</span>
                     </div>
                     <div class="box box3">
                         <i class="uil uil-share"></i>
-                        <span class="text">Total Sektor</span>
+                        <span class="text">Total Gejala</span>
                         <span class="number">16</span>
                     </div>
                 </div>
@@ -45,21 +45,27 @@
 
                 <div class="row">
                     <div class="col-lg-6 col-sm-12 mb-4">
-                        <span class="h5 d-block text-center mb-2">Jumlah Buah per Sektor</span>
-                        <canvas id="chartSektor"></canvas>
+                        <span class="h5 d-block text-center mb-2">Jumlah Diagnosa per Penyakit</span>
+                        <div id="chartPenyakit"></div>
                     </div>
                     <div class="col-lg-6 col-sm-12 mb-4">
-                        <span class="h5 d-block text-center mb-2">Jumlah Buah per Pegawai</span>
-                        <canvas id="chartPegawai"></canvas>
+                        <span class="h5 d-block text-center mb-2">Jumlah Pasien per Bulan</span>
+                        <div id="chartPasien"></div>
                     </div>
                     <div class="col-lg-6 col-sm-12 mb-4">
-                        <span class="h5 d-block text-center mb-2">Jumlah Buah per Cuaca</span>
-                        <canvas id="chartCuaca"></canvas>
+                        <span class="h5 d-block text-center mb-2">Top 5 Gejala yang Paling Sering Muncul</span>
+                        <div id="chartGejala"></div>
                     </div>
                     <div class="col-lg-6 col-sm-12 mb-4">
-                        <span class="h5 d-block text-center mb-2">Top 5 Pegawai dengan Pendapatan Tertinggi</span>
-                        <canvas id="chartPendapatan"></canvas>
+                        <span class="h5 d-block text-center mb-2">Diagnosa Berdasarkan Jenis Kelamin</span>
+                        <div id="chartGender"></div>
                     </div>
+                    <div class="col-lg-12 col-sm-12 mb-4">
+                        <span class="h5 d-block text-center mb-2">Kekuatan Bobot Gejala per Penyakit</span>
+                        <div id="chartRadar"></div>
+                    </div>
+
+
                 </div>
 
             </div>
@@ -67,86 +73,93 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        async function fetchChartData(url) {
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return await response.json();
-            } catch (error) {
-                console.error("Error fetching data from " + url + ": ", error);
-                return {
-                    labels: [],
-                    data: []
-                };
+        // Chart 1: Donut Chart Penyakit
+        var chartPenyakit = new ApexCharts(document.querySelector("#chartPenyakit"), {
+            chart: {
+                type: 'donut'
+            },
+            series: [40, 25, 20, 15],
+            labels: ["Hipertensi", "Diabetes", "Jantung", "Stroke"]
+        });
+        chartPenyakit.render();
+
+
+        // Chart 2: Line Chart Pasien per Bulan
+        var chartPasien = new ApexCharts(document.querySelector("#chartPasien"), {
+            chart: {
+                type: 'line'
+            },
+            series: [{
+                name: "Pasien",
+                data: [12, 18, 25, 30, 22, 28]
+            }],
+            xaxis: {
+                categories: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"]
             }
-        }
+        });
+        chartPasien.render();
 
-        async function renderCharts() {
-            // 1. Buah per sektor
-            const sektor = await fetchChartData('/chart/sektor');
-            new Chart(document.getElementById('chartSektor'), {
-                type: 'doughnut',
-                data: {
-                    labels: sektor.labels,
-                    datasets: [{
-                        data: sektor.data,
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A']
-                    }]
-                }
-            });
+        // Chart 3: Bar Chart Gejala
+        var chartGejala = new ApexCharts(document.querySelector("#chartGejala"), {
+            chart: {
+                type: 'bar'
+            },
+            series: [{
+                name: "Jumlah",
+                data: [55, 42, 39, 30, 28]
+            }],
+            xaxis: {
+                categories: ["Nyeri dada", "Pusing", "Lelah", "Sesak napas", "Mual"]
+            }
+        });
+        chartGejala.render();
 
-            // 2. Buah per pegawai
-            const pegawai = await fetchChartData('/chart/pegawai');
-            new Chart(document.getElementById('chartPegawai'), {
-                type: 'doughnut',
-                data: {
-                    labels: pegawai.labels,
-                    datasets: [{
-                        data: pegawai.data,
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#009688', '#9C27B0']
-                    }]
-                }
-            });
+        // Chart 4: Donut Chart Gender
+        var chartGender = new ApexCharts(document.querySelector("#chartGender"), {
+            chart: {
+                type: 'donut'
+            },
+            series: [60, 40],
+            labels: ["Pria", "Wanita"]
+        });
+        chartGender.render();
 
-            // 3. Buah per cuaca
-            const cuaca = await fetchChartData('/chart/cuaca');
-            new Chart(document.getElementById('chartCuaca'), {
-                type: 'doughnut',
-                data: {
-                    labels: cuaca.labels,
-                    datasets: [{
-                        data: cuaca.data,
-                        backgroundColor: ['#03A9F4', '#FF5722', '#8BC34A']
-                    }]
-                }
-            });
-
-            // 4. Pendapatan tertinggi
-            const pendapatan = await fetchChartData('/chart/pendapatan-tertinggi');
-            new Chart(document.getElementById('chartPendapatan'), {
-                type: 'bar',
-                data: {
-                    labels: pendapatan.labels,
-                    datasets: [{
-                        label: 'Total Pendapatan',
-                        data: pendapatan.data,
-                        backgroundColor: '#4CAF50'
-                    }]
+        // Radar Chart - Bobot Gejala per Penyakit (Contoh)
+        var optionsRadar = {
+            chart: {
+                type: 'radar',
+                height: 350
+            },
+            series: [{
+                    name: 'Hipertensi',
+                    data: [0.6, 0.3, 0.5, 0.2, 0.4] // Contoh bobot gejala
                 },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
+                {
+                    name: 'Diabetes',
+                    data: [0.2, 0.8, 0.3, 0.6, 0.4]
+                },
+                {
+                    name: 'Jantung',
+                    data: [0.7, 0.6, 0.4, 0.3, 0.5]
                 }
-            });
-        }
+            ],
+            xaxis: {
+                categories: ['Nyeri Dada', 'Sesak Napas', 'Pusing', 'Kelelahan', 'Mual']
+            },
+            stroke: {
+                width: 2
+            },
+            fill: {
+                opacity: 0.1
+            },
+            markers: {
+                size: 4
+            }
+        };
 
-        // Jalankan saat halaman siap
-        document.addEventListener('DOMContentLoaded', renderCharts);
+        var chartRadar = new ApexCharts(document.querySelector("#chartRadar"), optionsRadar);
+        chartRadar.render();
     </script>
 @endsection

@@ -86,16 +86,16 @@ class DiagnosaController extends Controller
     {
         $diagnosa = Diagnosa::with('gejalas')->findOrFail($id);
 
-        // Hitung ulang hasil diagnosa (jika belum disimpan sebelumnya bisa dihitung ulang di sini)
+        // Hitung ulang hasil
         $hasil = [];
-        $penyakits = Penyakit::all();
+        $penyakits = \App\Models\Penyakit::all();
         $gejalaDipilih = $diagnosa->gejalas->pluck('id')->toArray();
         $prior = 1 / $penyakits->count();
 
         foreach ($penyakits as $penyakit) {
             $prob = 1;
             foreach ($gejalaDipilih as $gejala_id) {
-                $bobot = BobotGejala::where('gejala_id', $gejala_id)
+                $bobot = \App\Models\BobotGejala::where('gejala_id', $gejala_id)
                     ->where('penyakit_id', $penyakit->id)
                     ->value('bobot') ?? 0.01;
                 $prob *= $bobot;
@@ -111,11 +111,16 @@ class DiagnosaController extends Controller
 
         arsort($hasil);
 
+        // Ambil detail penyakit dari hasil tertinggi
+        $penyakitUtama = \App\Models\Penyakit::where('nama', $diagnosa->hasil_penyakit)->first();
+
         return view('hasil', [
             'diagnosa' => $diagnosa,
             'hasil' => $hasil,
+            'penyakitUtama' => $penyakitUtama,
         ]);
     }
+
 
 
     public function index()
@@ -142,37 +147,11 @@ class DiagnosaController extends Controller
     public function destroy($id)
     {
         Diagnosa::findOrFail($id)->delete();
-        return redirect()->route('/admin/data-diagnosa')->with('success', 'Data berhasil dihapus');
-    }
-    public function edit($id)
-    {
-        $diagnosa = Diagnosa::with('gejalas')->findOrFail($id);
-        $gejalas = Gejala::all();
-        $penyakits = Penyakit::all();
+        return redirect()->route('admin.diagnosa.index')->with('success', 'Data berhasil dihapus');
 
-        return view('admin.edit-diagnosa', compact('diagnosa', 'gejalas', 'penyakits'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nama_pasien' => 'required|string',
-            'usia' => 'required|integer|min:1|max:120',
-            'jenis_kelamin' => 'required|in:Pria,Wanita',
-            'hasil_penyakit' => 'required|string',
-            'persentase' => 'required|numeric',
-        ]);
 
-        $diagnosa = Diagnosa::findOrFail($id);
-        $diagnosa->update($request->only([
-            'nama_pasien',
-            'usia',
-            'jenis_kelamin',
-            'hasil_penyakit',
-            'persentase'
-        ]));
 
-        return redirect()->route('admin.diagnosa.index')->with('success', 'Data diagnosa berhasil diperbarui.');
-    }
 
 }
